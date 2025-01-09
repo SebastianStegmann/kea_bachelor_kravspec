@@ -10,9 +10,10 @@ route::domain(config('app.subdomain'))->group(function () {
 
     require __DIR__ . "/auth.php";
 
+    Route::get("/", [SpecController::class, "index"])->name("home");
+
     Route::middleware("auth")->group(function () {
 
-        Route::get("/", [SpecController::class, "index"])->name("home");
         Route::get("/profile", [ProfileController::class, "edit"])->name(
             "profile.edit"
         );
@@ -83,5 +84,5 @@ route::domain(config('app.subdomain'))->group(function () {
 Route::domain(config('app.domain'))->group(function () {
     Route::get("/", function () {
         return view("landing-page");
-    });
+    })->name('landing-page');
 });
