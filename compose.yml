@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    image: ghcr.io/sebastianstegmann/kravspec:latest
+    container_name: laravel_app
+    restart: unless-stopped
+    volumes:
+      - sqlite_data:/var/www/html/database
+      - storage_data:/var/www/html/storage
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+
+
+  watchtower:
+     image: containrrr/watchtower
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - /home/seb/.docker/config.json:/config.json
+     command: --interval 30 --rolling-restart
+     environment:
+       - WATCHTOWER_CLEANUP=true
+       - WATCHTOWER_DEBUG=true
+
+volumes:
+  sqlite_data:
+  storage_data:
